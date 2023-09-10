@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>소프트웨어 라운지 :: 회원가입</title>
+    <link
+      href="https://fonts.googleapis.com/css?family=Karla:400,700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.materialdesignicons.com/4.8.95/css/materialdesignicons.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="assets-login/css/login.css" />
+    <link rel="stylesheet" href="assets/vendors/font-awesome/css/all.min.css" />
+    <link rel="stylesheet" href="assets/vendors/aos/aos.css" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+
+    <script src="assets/vendors/jquery/jquery.min.js"></script>
+    <script src="assets/js/loader.js"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.6.4.min.js"
+      integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8="
+      crossorigin="anonymous"
+    ></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/stylesheets/widget.css" />
+  </head>
+  <body>
+    <div class="edica-loader"></div>
+    <header class="edica-header">
+      <div class="container"><%- include('./sections/navbar.ejs') %></div>
+    </header>
+    <section class="msger" style="font-family: Gowun Dodum">
+      <!-- <header class="msger-header">
+        <div class="msger-header-title">
+          <i class="fas fa-comment-alt"></i> SW LounGPT
+        </div>
+        <div class="msger-header-options">
+          <span><i class="fas fa-cog"></i></span>
+        </div>
+      </header> -->
+
+      <main class="msger-chat">
+        <div class="msg left-msg">
+          <div
+            class="msg-img"
+            style="
+              background-image: url(https://lh3.googleusercontent.com/a/AGNmyxYAwzFjX8BfiDs9x5buRMhfquq9II0FZvLnX9Y5=s360);
+            "
+          ></div>
+
+          <div class="msg-bubble">
+            <div class="msg-info">
+              <div class="msg-info-name">SW라운지 멘토</div>
+              <div class="msg-info-time">00:00</div>
+            </div>
+
+            <div class="msg-text">
+              <p>
+                안녕하세요 <span id="UserNAME"><%= session.UserNAME %></span>님!
+                SW라운지입니다! 😄
+              </p>
+              <p>
+                이곳에서 하는 모든 질문은 ChatGPT가 답변해주는 동시에, SW라운지
+                멘토님들께도 전달된다는 점 참고해주세요!
+              </p>
+              <p>중간고사 화이팅입니다!</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="msg left-msg">
+          <div
+            class="msg-img"
+            style="
+              background-image: url(https://lh3.googleusercontent.com/a/AGNmyxYAwzFjX8BfiDs9x5buRMhfquq9II0FZvLnX9Y5=s360);
+            "
+          ></div>
+
+          <div class="msg-bubble">
+            <div class="msg-info">
+              <div class="msg-info-name">SW라운지 멘토</div>
+              <div class="msg-info-time">00:00</div>
+            </div>
+
+            <div class="msg-text">
+              <p>📍질문 방법📍</p>
+              <p>LounGPT는 하나의 질문만을 기억합니다</p>
+              <p>
+                질문은 최대한 구체적으로 작성해주셔야 정확한 답변을 얻을 수
+                있습니다
+              </p>
+            </div>
+          </div>
+        </div>
+        <!-- 이전 채팅 기록 불러오기. chatGPT, SW라운지 멘토, UserNAME 순... -->
+        <% function formatDate(date) { const h = "0" + date.getHours(); const m
+        = "0" + date.getMinutes(); return `${h.slice(-2)}:${m.slice(-2)}`; } %>
+        <% for(let i = 0; i < chatRecordList.length; i++) { %>
+        <!-- UserNAME -->
+        <div class="msg right-msg">
+          <div
+            class="msg-img"
+            style="
+              background-image: url(https://cdn-icons-png.flaticon.com/512/1077/1077012.png);
+            "
+          ></div>
+
+          <div class="msg-bubble">
+            <div class="msg-info">
+              <div class="msg-info-name"><%= session.UserNAME %></div>
+              <div class="msg-info-time">
+                <%= formatDate(chatRecordList[i].Created_at) %>
+              </div>
+            </div>
+
+            <div class="msg-text"><%= chatRecordList[i].Question %></div>
+          </div>
+        </div>
+        <!-- ChatGPT -->
+        <div class="msg left-msg">
+          <div
+            class="msg-img"
+            style="
+              background-image: url(https://cdn-icons-png.flaticon.com/512/1782/1782384.png);
+            "
+          ></div>
+
+          <div class="msg-bubble">
+            <div class="msg-info">
+              <div class="msg-info-name">ChatGPT</div>
+              <div class="msg-info-time">
+                <%= formatDate(chatRecordList[i].Created_at) %>
+              </div>
+            </div>
+
+            <div class="msg-text"><%= chatRecordList[i].GPTAnswer %></div>
+          </div>
+        </div>
+        <!-- SW라운지 멘토 -->
+        <% if( !!chatRecordList[i].LOUNGEAnswer) { %>
+        <div class="msg left-msg">
+          <div
+            class="msg-img"
+            style="
+              background-image: url(https://lh3.googleusercontent.com/a/AGNmyxYAwzFjX8BfiDs9x5buRMhfquq9II0FZvLnX9Y5=s360);
+            "
+          ></div>
+
+          <div class="msg-bubble">
+            <div class="msg-info">
+              <div class="msg-info-name">SW라운지 멘토</div>
+              <div class="msg-info-time">
+                <%= formatDate(!chatRecordList[i].Updated_at ? new Date() :
+                chatRecordList[i].Updated_at) %>
+              </div>
+            </div>
+
+            <div class="msg-text"><%= chatRecordList[i].LOUNGEAnswer %></div>
+          </div>
+        </div>
+        <% } %> <% } %>
+
+        <!-- <div class="msg right-msg">
+          <div
+            class="msg-img"
+            style="
+              background-image: url(https://image.flaticon.com/icons/svg/145/145867.svg);
+            "
+          ></div>
+    
+          <div class="msg-bubble">
+            <div class="msg-info">
+              <div class="msg-info-name">Sajad</div>
+              <div class="msg-info-time">12:46</div>
+            </div>
+    
+            <div class="msg-text">You can change your name in JS section!</div>
+          </div>
+        </div> -->
+      </main>
+
+      <form class="msger-inputarea">
+        <input
+          type="text"
+          class="msger-input"
+          placeholder="Enter your message..."
+        />
+        <button type="submit" class="msger-send-btn">Send</button>
+      </form>
+    </section>
+    <script type="text/javascript" src="/javascripts/widget.js"></script>
+    <!-- <script type="module" src="/javascripts/widget.js"></script> -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+  </body>
+</html>

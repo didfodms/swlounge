@@ -1,0 +1,108 @@
+<nav class="navbar navbar-expand-lg navbar-light">
+  <a class="navbar-brand" href="/index"
+    ><img src="SW_LOUNGE_LOGO.svg" alt="logo"
+  /></a>
+  <button
+    class="navbar-toggler d-lg-none"
+    type="button"
+    data-toggle="collapse"
+    data-target="#edicaMainNav"
+    aria-controls="collapsibleNavId"
+    aria-expanded="false"
+    aria-label="Toggle navigation"
+  >
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="edicaMainNav">
+    <ul class="navbar-nav mx-auto mt-2 mt-lg-0">
+      <li class="nav-item active">
+        <!-- <a class="nav-link" href="/"
+          >홈<span class="sr-only">(current)</span></a
+        >
+      </li> -->
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="/about">소개</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a
+          class="nav-link dropdown-toggle"
+          href="#"
+          id="blogDropdown"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+          >멘토링</a
+        >
+        <div class="dropdown-menu" aria-labelledby="blogDropdown">
+          <a class="dropdown-item" href="/mentoring-online">온라인</a>
+          <a class="dropdown-item" href="/mentoring-offline">오프라인</a>
+        </div>
+      </li>
+      <li class="nav-item dropdown">
+        <a
+          class="nav-link dropdown-toggle"
+          href="#"
+          id="pagesDropdown"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+          >체험</a
+        >
+        <div class="dropdown-menu" aria-labelledby="pagesDropdown">
+          <a class="dropdown-item" href="/experience-vr">VR</a>
+          <a class="dropdown-item" href="/experience-boardgame">보드게임</a>
+        </div>
+      </li>
+      <li class="nav-item">
+        <!-- <a class="nav-link" href="/contact">파이썬 테스트</a> -->
+        <a
+          class="nav-link dropdown-toggle"
+          href="#"
+          id="pythonDropdown"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+          >파이썬 학습</a
+        >
+        <style>
+          @media (min-width: 992px) {
+
+            #pythonDropdown > dropdown-menu {
+
+              margin-left : 10rem;
+            }
+          }
+        </style>
+        <div class="dropdown-menu" aria-labelledby="pythonDropdown">
+          <a class="dropdown-item" href="/qna-notion">Q&A 리스트(노션)</a>
+          <a class="dropdown-item" href="/qna-gpt">Q&A 리스트(지피티)</a>
+          <a class="dropdown-item" href="http://comedu.jejunu.ac.kr" target="blank_">온라인저지</a>
+        </div>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/widget">ChatGPT</a>
+      </li>
+    </ul>
+    <ul class="navbar-nav mt-2 mt-lg-0" style="opacity: 0.7">
+      <% if(session.is_logined) { %>
+      <li class="nav-item">
+        <a class="nav-link" href="/logout">로그아웃</a>
+      </li>
+      <% } else { %>
+      <li class="nav-item">
+        <a class="nav-link" href="/login">
+          <!-- <span
+            class="flag-icon flag-icon-squared rounded-circle flag-icon-gb"
+          ></span> -->
+          로그인</a
+        >
+      </li>
+      <% } %>
+      <!-- <li class="nav-item">
+        <a class="nav-link" href="#">회원가입</a>
+      </li> -->
+    </ul>
+  </div>
+</nav>

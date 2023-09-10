@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>소프트웨어라운지 :: QNA 리스트 (노션)</title>
+    <link rel="stylesheet" href="assets/vendors/flag-icon-css/css/flag-icon.min.css">
+    <link rel="stylesheet" href="assets/vendors/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="assets/vendors/aos/aos.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script src="assets/vendors/jquery/jquery.min.js"></script>
+    <script src="assets/js/loader.js"></script>
+    <style>
+        /* 기본 스타일 */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        /* 검색바 스타일 */
+        #searchBar {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        #searchInput {
+            padding: 10px;
+            width: 300px;
+            border: none;
+            border-radius: 5px 0 0 5px;
+        }
+
+        button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            background-color: #333;
+            color: #fff;
+        }
+
+        /* 게시글 목록 스타일 */
+        #postList {
+            list-style-type: none;
+            padding: 0;
+            width: 80%;
+            margin: 0 auto;
+        }
+
+       /* 게시글 목록 스타일 변경 */
+        #postList li {
+            background-color: #FFFFFF;  /* 하얀색 배경 */
+            border: 2px solid #FFEB3B;  /* 연한 노란색 테두리 */
+            border-radius: 50px;  /* 동그랗게 변경 */
+            margin-bottom: 20px;  /* 리스트 간의 간격 추가 */
+            transition: transform 0.3s;  /* 확대 애니메이션 */
+        }
+
+        #postList li:hover {
+            transform: scale(1.05);  /* 마우스 오버시 확대 */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  /* 그림자 효과 추가 */
+        }
+
+        #postList li a {
+            padding: 10px 20px;  /* 내부 패딩 추가 */
+            display: flex;  /* 한 줄에 표시 */            
+            align-items: center;  /* 세로 중앙 정렬 */
+            color: inherit;  /* 기본 글자 색상 */
+           text-decoration: none;  /* 밑줄 제거 */    
+        }
+
+        .postNumber, .postDate, .postSummary {
+            padding: 0 10px;  /* 내부 패딩 */
+            text-align: center;  /* 내용 중앙 정렬 */
+        }
+        .postNumber::before, .postDate::before {
+            content: "|";  /* 구분 요소 추가 */
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #FFEB3B;  /* 연한 노란색 */
+        }
+        .postNumber {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            border-radius: 50%;  /* 동그라미 모양 */
+            background-color: #FFEB3B;  /* 연한 노란색 배경 */
+            color: #333;  /* 글자 색상 */
+        }
+        .postNumber::before, .postDate::before {
+            content: none;  /* 기존 구분 요소 제거 */
+        }   
+
+        .postNumber, .postDate {
+            font-size: 14px;  /* 글자 크기 줄임 */
+        }
+
+        .postNumber {
+            width: 30px;  /* 원 크기 줄임 */
+            height: 30px;
+            line-height: 30px;
+        }
+
+        .postDate {
+            margin-left: auto;  /* 제일 오른쪽으로 이동 */
+        }
+        .postSummary {
+            flex-grow: 1;  /* 남은 공간을 모두 차지 */
+            text-align: left;  /* 왼쪽 정렬 */
+        }
+
+    .postDate {
+            margin-left: 20px;  /* 좌측 간격 추가 */
+        }
+
+         /* 애니메이션 추가 */
+        #postList li {
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: opacity 0.5s, transform 0.5s;
+        }
+
+        #postList li.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="edica-loader"></div>
+    <header class="edica-header">
+        <div class="container">
+                      <!-- include navbar -->
+      <%- include('./sections/navbar.ejs') %>
+        </div>
+    </header>
+
+    <main class="blog-post">
+        <div class="container">
+            <h1 class="edica-page-title" data-aos="fade-up">QNA 리스트 (노션)</h1>
+            <div id="searchBar">
+                <input type="text" id="searchInput" placeholder="검색..." onkeydown="handleEnter(event)">
+                <button onclick="searchPosts()">검색</button>
+                <button onclick="resetPosts()">초기화</button>
+            </div>
+        <style>
+            #postList {
+                margin-bottom : 120rem;
+            }
+        </style>
+            <ul id="postList" class="mb-5">
+                <li id="noResults" style="display: none;">검색 결과가 없습니다.</li>
+            </ul>
+        
+            <script>
+                let allPosts = [];  // 모든 게시글을 저장하는 배열
+                let files = [];     // 파일 리스트를 저장하는 배열
+        
+                document.querySelectorAll('.postSummary').forEach(adjustFontSize);
+                document.querySelectorAll('.postDate').forEach(adjustFontSize);
+        
+                // CSV 파일을 파싱하는 함수
+                function parseCSV(data) {
+                    const rows = data.split('\n');
+                    let result = [];
+                    for (let i = 1; i < rows.length; i++) {
+                        const rawCells = rows[i].split(',');
+                        const cells = [];
+                        let tempCell = '';
+                        for (let cell of rawCells) {
+                            if (cell.startsWith('"')) {
+                                if (cell.endsWith('"')) {
+                                    cells.push(cell.slice(1, -1));
+                                } else {
+                                    tempCell = cell.slice(1);
+                                }
+                            } else if (cell.endsWith('"')) {
+                                tempCell += ',' + cell.slice(0, -1);
+                                cells.push(tempCell);
+                                tempCell = '';
+                            } else if (tempCell) {
+                                tempCell += ',' + cell;
+                            } else {
+                                cells.push(cell);
+                            }
+                        }
+                        result.push({
+                            number: cells[0],
+                            date: cells[1],
+                            summary: cells[10]
+                        });
+                    }
+                    return result;
+                }
+                function displayPosts(posts, files) {
+                    const postList = document.getElementById('postList');
+                    postList.innerHTML = '';  // 목록 초기화
+        
+                    for (let post of posts) {
+                        const li = document.createElement('li');
+                        const a = document.createElement('a');
+                        
+                        // 파일 리스트에서 매칭되는 파일을 찾습니다.
+                        const matchedFile = files.find(file => file.startsWith(post.number.slice(0, 3)));
+                        if (matchedFile) {
+                            a.href = matchedFile.endsWith('.html') ? matchedFile : matchedFile + ".html";
+                            a.innerHTML = `<span class="postNumber">${post.number}</span>
+                                        <span class="postDate">${post.date}</span><br>
+                                        <span class="postSummary">${post.summary}</span>`;
+                            li.appendChild(a);
+                            postList.appendChild(li);
+        
+                            // 애니메이션 효과를 위해 setTimeout 사용
+                            setTimeout(() => {
+                                li.classList.add('show');
+                            }, 100);
+                        }
+                    }
+                }
+                function searchPosts() {
+                    const keyword = document.getElementById('searchInput').value.toLowerCase();
+                    const filteredPosts = allPosts.filter(post => post.summary.toLowerCase().includes(keyword));
+                    displayPosts(filteredPosts, files);
+                }
+        
+                // 초기화 기능
+                function resetPosts() {
+                    document.getElementById('searchInput').value = '';  // 검색 입력창 초기화
+                    displayPosts(allPosts, files);  // 모든 게시글을 다시 표시
+                }
+        
+                function handleEnter(event) {
+                    if (event.key === 'Enter') {
+                        searchPosts();
+                    }
+                }
+                function adjustFontSize(element) {
+                    while (element.scrollWidth > element.offsetWidth) {
+                        const currentSize = window.getComputedStyle(element, null).getPropertyValue('font-size');
+                        const newSize = (parseFloat(currentSize) - 1) + 'px';
+                        element.style.fontSize = newSize;
+                    }
+                }
+        
+                // 페이지 로드가 완료되면 모든 postSummary 요소에 대해 글자 크기 조절을 적용합니다.
+                window.onload = function() {
+                    document.querySelectorAll('.postSummary').forEach(adjustFontSize);
+                }
+        
+                // CSV 파일과 파일 리스트를 불러와서 게시글 목록을 화면에 표시합니다.
+                Promise.all([
+                    fetch('/posts.csv').then(response => response.text()),
+                    fetch('/qna-notion/api/files').then(response => response.json())
+                ]).then(([data, fileList]) => {
+                    allPosts = parseCSV(data);  // 모든 게시글을 저장
+                    files = fileList;           // 파일 리스트 저장
+                    console.log(files);
+                    displayPosts(allPosts, files);
+                });
+            </script>
+        </div>
+    </main>
+      <!-- include footer -->
+      <!-- <%- include('./sections/footer.ejs') %> -->
+    <script src="assets/vendors/popper.js/popper.min.js"></script>
+    <script src="assets/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="assets/vendors/aos/aos.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script>
+        AOS.init({
+            duration: 1000
+        });
+      </script>
+</body>
+
+</html>
