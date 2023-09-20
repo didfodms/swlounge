@@ -23,6 +23,7 @@ const userMentoringOnlineRouter = require("./routes/user/mentoring-online");
 const userMentoringOfflineRouter = require("./routes/user/mentoring-offline");
 const userExVRRouter = require("./routes/user/experience-vr");
 const userExBoardGameRouter = require("./routes/user/experience-boardgame");
+const userNotionRouter = require("./routes/user/notion");
 
 // admin
 const dashboardRouter = require("./routes/admin/dashboard");
@@ -82,6 +83,7 @@ app.use("/mentoring-online", userMentoringOnlineRouter);
 app.use("/mentoring-offline", userMentoringOfflineRouter);
 app.use("/experience-vr", userExVRRouter);
 app.use("/experience-boardgame", userExBoardGameRouter);
+app.use("/notion", userNotionRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
